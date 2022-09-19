@@ -54,9 +54,16 @@ function addClickToButtons() {
 
 function moveLift(floorId, freeLift) {
   if (!freeLift.classList.contains("busy")) {
+    const floorDur = floorId === 0 ? 2 : floorId * 2;
+    freeLift.style.transition = `transform ${floorDur}s linear`;
     freeLift.style.transform = `translateY(-${9.2 * parseInt(floorId)}rem)`;
     freeLift.classList.add("busy");
-    setTimeout(() => freeLift.classList.remove("busy"), 3000);
+    setTimeout(() => freeLift.classList.add("open"), (floorDur + 2) * 1000);
+    setTimeout(
+      () => freeLift.classList.remove("open"),
+      (floorDur + 4.5) * 1000
+    );
+    setTimeout(() => freeLift.classList.remove("busy"), (floorDur + 7) * 1000);
   }
 }
 
@@ -73,7 +80,7 @@ function handleMove(floorId) {
         alert("No Free Lift atm");
       }
     }
-  }, 2000);
+  }, 1000);
 }
 
 const getFreeLift = (allLift) => {
