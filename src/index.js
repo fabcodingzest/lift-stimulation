@@ -54,8 +54,10 @@ function addClickToButtons() {
 
 function moveLift(floorId, freeLift) {
   if (!freeLift.classList.contains("busy")) {
-    const floorDur = floorId === 0 ? 2 : floorId * 2;
-    freeLift.style.transition = `transform ${floorDur}s linear`;
+    const floorDur = floorId * 2;
+    freeLift.style.transition = `transform ${
+      floorDur !== 0 ? floorDur : 2
+    }s linear`;
     freeLift.style.transform = `translateY(-${9.2 * parseInt(floorId)}rem)`;
     freeLift.classList.add("busy");
     setTimeout(() => freeLift.classList.add("open"), (floorDur + 2) * 1000);
