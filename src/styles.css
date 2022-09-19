@@ -9,7 +9,7 @@ body {
   padding: 1rem;
 }
 
-#input {
+#inputs {
   display: flex;
   flex-direction: column;
   max-width: 16rem;
@@ -21,7 +21,7 @@ input {
   margin-top: 0.3rem;
 }
 
-#input button {
+#inputs button {
   margin: 1rem auto;
   padding: 0.6rem 1.2rem;
 }
@@ -102,7 +102,6 @@ input {
 .lift-box {
   height: 9.2rem;
   min-width: 4rem;
-  /* transition: all 2s linear; */
   overflow: hidden;
 }
 .lift-box::after,
@@ -120,4 +119,31 @@ input {
 }
 .lift-box.open::before {
   transform: translate(-100%);
+}
+
+@media screen and (max-width: 650px) {
+  #ui {
+    min-width: 10rem;
+    max-width: 20rem;
+    margin-top: 0;
+  }
+  .floor-container {
+    height: 4rem;
+  }
+  .controllers {
+    gap: 0.2rem;
+  }
+
+  .controllers button {
+    padding: 0.2rem 0.4rem;
+  }
+  .lift {
+    left: 4rem;
+    gap: 0.4rem;
+    width: 50%;
+  }
+  .lift-box {
+    height: 4.2rem;
+    min-width: 2rem;
+  }
 }
