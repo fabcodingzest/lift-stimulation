@@ -52,11 +52,22 @@ function addClickToButtons() {
   });
 }
 
-function moveLift(floorId, freeLift) {
+function moveLift(id, freeLift) {
   if (!freeLift.classList.contains("busy")) {
-    freeLift.style.transform = `translateY(-${9.2 * parseInt(floorId)}rem)`;
+    let floorId = parseInt(id);
+    let currentFloor = parseInt(freeLift.dataset.floor) || 0;
+    freeLift.dataset.floor = floorId;
+    console.log(floorId);
+    const floorDur = Math.abs(currentFloor - floorId) * 2;
+    freeLift.style.transition = `transform ${floorDur}s linear`;
+    freeLift.style.transform = `translateY(-${9.2 * floorId}rem)`;
     freeLift.classList.add("busy");
-    setTimeout(() => freeLift.classList.remove("busy"), 3000);
+    setTimeout(() => freeLift.classList.add("open"), (floorDur + 2) * 1000);
+    setTimeout(
+      () => freeLift.classList.remove("open"),
+      (floorDur + 4.5) * 1000
+    );
+    setTimeout(() => freeLift.classList.remove("busy"), (floorDur + 7) * 1000);
   }
 }
 
@@ -67,19 +78,18 @@ function handleMove(floorId) {
   setInterval(() => {
     if (floorOrder.length > 0) {
       freeLift = getFreeLift(allLiftArr);
-      if (!freeLift.classList.contains("busy")) {
+      if (!freeLift?.classList.contains("busy")) {
         moveLift(floorOrder.shift(), freeLift);
       } else {
         alert("No Free Lift atm");
       }
     }
-  }, 2000);
+  }, 1000);
 }
 
 const getFreeLift = (allLift) => {
   const newLiftArr = Array.from(allLift);
   for (let i = 0; i < newLiftArr.length; i++) {
-    console.log(newLiftArr[i].classList);
     if (!newLiftArr[i].classList.contains("busy")) {
       return newLiftArr[i];
     }

@@ -102,6 +102,22 @@ input {
 .lift-box {
   height: 9.2rem;
   min-width: 4rem;
+  /* transition: all 2s linear; */
+  overflow: hidden;
+}
+.lift-box::after,
+.lift-box::before {
+  content: "";
+  display: inline-block;
+  height: 100%;
+  width: 50%;
   background: grey;
-  transition: all 2s ease-in-out;
+  transition: transform 2.5s ease-in-out;
+}
+
+.lift-box.open::after {
+  transform: translate(100%);
+}
+.lift-box.open::before {
+  transform: translate(-100%);
 }
