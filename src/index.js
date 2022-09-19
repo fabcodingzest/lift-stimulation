@@ -57,7 +57,6 @@ function moveLift(id, freeLift) {
     let floorId = parseInt(id);
     let currentFloor = parseInt(freeLift.dataset.floor) || 0;
     freeLift.dataset.floor = floorId;
-    console.log(floorId);
     const floorDur = Math.abs(currentFloor - floorId) * 2;
     freeLift.style.transition = `transform ${floorDur}s linear`;
     freeLift.style.transform = `translateY(-${
