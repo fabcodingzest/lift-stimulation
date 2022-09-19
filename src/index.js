@@ -60,7 +60,9 @@ function moveLift(id, freeLift) {
     console.log(floorId);
     const floorDur = Math.abs(currentFloor - floorId) * 2;
     freeLift.style.transition = `transform ${floorDur}s linear`;
-    freeLift.style.transform = `translateY(-${9.2 * floorId}rem)`;
+    freeLift.style.transform = `translateY(-${
+      (window.innerWidth > 650 ? 9.2 : 4.2) * floorId
+    }rem)`;
     freeLift.classList.add("busy");
     setTimeout(() => freeLift.classList.add("open"), (floorDur + 2) * 1000);
     setTimeout(
