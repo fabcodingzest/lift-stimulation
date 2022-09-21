@@ -1,11 +1,11 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
   font-family: sans-serif;
-  box-sizing: border-box;
   padding: 1rem;
 }
 
@@ -49,13 +49,13 @@ input {
 .floor-container {
   width: 100%;
   height: 9rem;
-  border-bottom: 0.2rem solid black;
+  border-bottom: 0.2rem solid rgba(230, 61, 61, 0.722);
   display: flex;
   align-items: center;
 }
 
 .floor-text {
-  width: 4rem;
+  width: 5rem;
   padding-left: 0.6rem;
   align-self: end;
 }
@@ -90,19 +90,21 @@ input {
   transform: translateX(1px) translateY(1px);
 }
 .lift {
-  width: 60%;
+  width: 70%;
   position: absolute;
   bottom: 0;
-  left: 7rem;
+  left: 7.2rem;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
 }
 
 .lift-box {
-  height: 9.2rem;
+  height: 9rem;
   min-width: 4rem;
   overflow: hidden;
+  border: 4px inset rgb(177, 173, 173);
+  border-bottom: 0;
 }
 .lift-box::after,
 .lift-box::before {
@@ -110,8 +112,32 @@ input {
   display: inline-block;
   height: 100%;
   width: 50%;
-  background: grey;
+  box-shadow: inset -2px 2px 6px 2px rgba(176, 176, 176, 1);
   transition: transform 2.5s ease-in-out;
+}
+.lift-box::before {
+  background: linear-gradient(
+    135deg,
+    #f6f8f9 0%,
+    #d5d1d1 20%,
+    #e5e9ed 40%,
+    #e8eaeb 60%,
+    #f5f7f9 80%,
+    #c6cccf 100%
+  );
+}
+
+.lift-box::after {
+  box-shadow: inset 2px 2px 10px 2px rgba(176, 176, 176, 1);
+  background: linear-gradient(
+    135deg,
+    #cfd3d5 0%,
+    #dfe5e8 21%,
+    #e8eaeb 44%,
+    #e9ecee 66%,
+    #dee1e1 82%,
+    #f6f8f9 100%
+  );
 }
 
 .lift-box.open::after {
@@ -130,20 +156,25 @@ input {
   .floor-container {
     height: 4rem;
   }
+  .floor-text {
+    width: 3.2rem;
+    font-size: 0.6rem;
+  }
   .controllers {
     gap: 0.2rem;
   }
-
   .controllers button {
-    padding: 0.2rem 0.4rem;
+    padding: 0.1rem 0.4rem;
+    font-size: 0.6rem;
   }
   .lift {
-    left: 4rem;
+    left: 3.5rem;
     gap: 0.4rem;
-    width: 50%;
+    width: 65%;
   }
   .lift-box {
-    height: 4.2rem;
+    height: 4rem;
     min-width: 2rem;
+    border: 2px inset rgb(177, 173, 173);
   }
 }
