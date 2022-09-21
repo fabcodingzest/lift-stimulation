@@ -82,7 +82,7 @@ create.addEventListener("click", () => {
       }
       for (let i = 0; i < lifts; i++) {
         liftHTML += `
-      <div class="lift-box"></div>
+      <div class="lift-box" data-floor="0"></div>
       `;
       }
       floorContainer.innerHTML = floorHTML;
@@ -102,13 +102,9 @@ function addClickToButtons() {
   // we gave data-floor to buttons while creating the UI hence can access them here for clicked floor ID
   moveBtns.forEach((item) => {
     const floorId = item.dataset.floor;
-    console.log(floorOrder);
     item.addEventListener(
       "click",
-      debounce(() => {
-        console.log("clicked" + floorId);
-        handleMove(floorId);
-      }, 1000)
+      debounce(() => handleMove(floorId), 1000)
     );
   });
 }
@@ -117,7 +113,7 @@ function moveLift(id, freeLift) {
   if (!freeLift.classList.contains("busy")) {
     let floorId = parseInt(id);
     // we set the data-set here so next time we can abstract it to get current floor
-    let currentFloor = parseInt(freeLift.dataset.floor) || 0;
+    let currentFloor = parseInt(freeLift.dataset.floor);
     freeLift.dataset.floor = floorId;
     const reachingTime = Math.abs(currentFloor - floorId) * 2;
     freeLift.style.transition = `transform ${reachingTime}s linear`;
@@ -130,22 +126,20 @@ function moveLift(id, freeLift) {
       () => freeLift.classList.remove("open"),
       (reachingTime + 4.5) * 1000
     );
-    setTimeout(
-      () => freeLift.classList.remove("busy"),
-      (reachingTime + 7) * 1000
-    );
+    setTimeout(() => {
+      freeLift.classList.remove("busy");
+    }, (reachingTime + 7) * 1000);
   }
 }
 
 function handleMove(floorId) {
-  const allLiftArr = document.querySelectorAll(".lift-box");
-  let freeLift = getFreeLift(allLiftArr);
   floorOrder.push(floorId);
   // setting Interval after every second to check for any floors that are in order
   setInterval(() => {
     if (floorOrder.length > 0) {
+      const firstDestination = floorOrder[0];
+      let freeLift = getFreeLift(firstDestination);
       // getting freeLift available
-      freeLift = getFreeLift(allLiftArr);
       if (!freeLift?.classList.contains("busy")) {
         moveLift(floorOrder.shift(), freeLift); // we pass the first item in array as we push floors to the back of array
       } else {
@@ -155,14 +149,29 @@ function handleMove(floorId) {
   }, 1000);
 }
 
-const getFreeLift = (allLift) => {
+const getFreeLift = (id) => {
+  const allLift = document.querySelectorAll(".lift-box");
+  const floorId = parseInt(id);
   // Converting NodeList to array
   const newLiftArr = Array.from(allLift);
-  // Returning whichever lift is free at the moment
+  let availableLifts = [];
+
   for (let i = 0; i < newLiftArr.length; i++) {
+    // 1. get all the free Lifts
     if (!newLiftArr[i].classList.contains("busy")) {
-      return newLiftArr[i];
+      availableLifts.push(newLiftArr[i]);
     }
   }
-  return 0;
+  let closestFreeLift = availableLifts[0];
+  let prevDiff;
+  // 2. check which is the closest to desired floor
+  availableLifts.forEach((item, i) => {
+    let nowDiff = Math.abs(parseInt(item.dataset.floor) - floorId);
+    if (i === 0) prevDiff = nowDiff;
+    if (nowDiff < prevDiff) {
+      closestFreeLift = availableLifts[i];
+      prevDiff = nowDiff;
+    }
+  });
+  return closestFreeLift || 0;
 };
