@@ -4,12 +4,35 @@ const noOfLifts = document.querySelector("#noOfLifts");
 const floorContainer = document.querySelector(".floor");
 const liftContainer = document.querySelector(".lift");
 
-const floorOrder = [];
+let floorOrder = [];
+
+const reset = () => {
+  noOfFloors.value = null;
+  noOfLifts.value = null;
+  floorContainer.innerHTML = "";
+  liftContainer.innerHTML = "";
+  floorOrder = [];
+};
 
 create.addEventListener("click", () => {
   const floors = parseInt(noOfFloors.value, 10);
   const lifts = parseInt(noOfLifts.value, 10);
-  if (floors > 0 && lifts > 0) {
+  // Reset previous values and clear the UI
+  reset();
+  const halfNoOfFloors = Math.ceil((1 / 2) * floors);
+  if (!floors || !lifts) {
+    alert("Please enter both floor and lift numbers");
+  } else if (floors > 10 || lifts > floors || lifts > halfNoOfFloors) {
+    floors > 10 &&
+      alert("The app does not support more than 10 floors for now");
+    lifts > halfNoOfFloors &&
+      alert(
+        `${halfNoOfFloors} ${
+          halfNoOfFloors > 1 ? "lifts are" : "lift is"
+        } more than enough for ${floors} floors! ${lifts} would be unnecessary please re-enter the number :)`
+      );
+    lifts > floors && alert("Lifts cannot be more than the number of floors");
+  } else if (floors > 0 && lifts > 0) {
     let floorHTML = "";
     let liftHTML = "";
     for (let i = floors - 1; i >= 0; i--) {
@@ -60,7 +83,7 @@ function moveLift(id, freeLift) {
     const floorDur = Math.abs(currentFloor - floorId) * 2;
     freeLift.style.transition = `transform ${floorDur}s linear`;
     freeLift.style.transform = `translateY(-${
-      (window.innerWidth > 650 ? 9.2 : 4.2) * floorId
+      (window.innerWidth > 650 ? 9 : 4) * floorId
     }rem)`;
     freeLift.classList.add("busy");
     setTimeout(() => freeLift.classList.add("open"), (floorDur + 2) * 1000);
