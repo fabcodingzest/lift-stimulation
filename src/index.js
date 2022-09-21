@@ -6,6 +6,14 @@ const liftContainer = document.querySelector(".lift");
 
 let floorOrder = [];
 
+const debounce = (func, delay) => {
+  let debounceTimer;
+  return function (args) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => func(args), delay);
+  };
+};
+
 const reset = () => {
   noOfFloors.value = null;
   noOfLifts.value = null;
@@ -94,7 +102,14 @@ function addClickToButtons() {
   // we gave data-floor to buttons while creating the UI hence can access them here for clicked floor ID
   moveBtns.forEach((item) => {
     const floorId = item.dataset.floor;
-    item.addEventListener("click", () => handleMove(floorId));
+    console.log(floorOrder);
+    item.addEventListener(
+      "click",
+      debounce(() => {
+        console.log("clicked" + floorId);
+        handleMove(floorId);
+      }, 1000)
+    );
   });
 }
 
