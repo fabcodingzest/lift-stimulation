@@ -14,6 +14,14 @@ const reset = () => {
   floorOrder = [];
 };
 
+[noOfLifts, noOfFloors].forEach((item) => {
+  item.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      create.click();
+    }
+  });
+});
+
 create.addEventListener("click", () => {
   const floors = parseInt(noOfFloors.value, 10);
   const lifts = parseInt(noOfLifts.value, 10);
